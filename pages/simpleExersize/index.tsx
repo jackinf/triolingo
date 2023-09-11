@@ -1,8 +1,8 @@
-import {FormEvent, useEffect, useRef, useState} from 'react';
+import {FormEvent, MouseEvent, useEffect, useRef, useState} from 'react';
 import styles from './SimpleExersize.module.css';
 import useSWR from 'swr';
 import {Question} from "@/interfaces";
-import { useSpring, animated, useTransition } from '@react-spring/web'
+import { animated, useTransition } from '@react-spring/web'
 import Confetti from 'react-confetti';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -11,17 +11,10 @@ export default function SimpleExersize() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [userInput, setUserInput] = useState('');
     const [score, setScore] = useState(0);
-    const inputRef = useRef(null);
-    const [showConfetti, setShowConfetti] = useState(false);
+    const inputRef = useRef<any | null>(null);
     const [gameInProgress, setGameInProgress] = useState(true);
 
     const { data: questions, error, isLoading } = useSWR<Question[]>('/api/questions', fetcher)
-
-    const [slideProps, api] = useSpring(() => ({
-        opacity: 1,
-        marginTop: 0,
-        from: {opacity: 0, marginTop: -500},
-    }));
 
     const transitions = useTransition(currentIndex, {
         from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
@@ -30,10 +23,16 @@ export default function SimpleExersize() {
     });
 
     useEffect(() => {
-        if (inputRef && inputRef.current && gameInProgress) {
-            setTimeout(() => inputRef.current.focus(), 500);
+        if (!gameInProgress && !inputRef) {
+            return;
         }
-    }, [currentIndex]);
+
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, 500);
+    }, [gameInProgress, currentIndex]);
 
     if (error) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
@@ -42,26 +41,30 @@ export default function SimpleExersize() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
-        if (userInput.toLowerCase() === questions[currentIndex].nl) {
+        if (userInput.toLowerCase() === questions[currentIndex].nl.toLowerCase()) {
             setScore(score + 1);
         }
 
         if (currentIndex < questions.length - 1) {
             setCurrentIndex(currentIndex + 1);
-            setUserInput('');
         } else {
-            // alert(`Game over! Your score is ${score + 1}`);
-            setGameInProgress(true);
-            setShowConfetti(true);
+            setGameInProgress(false);
         }
+
+        setUserInput('');
     };
+
+    const handleReset = (e: MouseEvent) => {
+        setCurrentIndex(0);
+        setGameInProgress(true);
+        setScore(0);
+    }
 
     return (
         <div className={styles.container}>
-            {showConfetti && <Confetti />}
-            {transitions((transitionStyles, index) => (
+            {!gameInProgress && <Confetti />}
+            {gameInProgress && transitions((transitionStyles, index) => (
                 <animated.div style={transitionStyles} className={styles.wrapper} key={index}>
-                    {!showConfetti && (
                         <>
                             <h1 className={styles.title}>Translate the word: {questions[currentIndex].en}</h1>
                             <form onSubmit={handleSubmit} className={styles.form}>
@@ -75,12 +78,16 @@ export default function SimpleExersize() {
                                 <button className={styles.button} type="submit">Submit</button>
                             </form>
                         </>
-                    )}
                 </animated.div>
             ))}
-            {showConfetti && (
+            {!gameInProgress && (
                 <div className={`${styles.scoreboard} ${styles.wrapper}`}>
-                    Congratulations! Your final score is: {score}
+                    <div>
+                        Congratulations! Your final score is: {score}
+                    </div>
+                    <div>
+                        <button onClick={handleReset} className={styles.button} type="submit">Reset</button>
+                    </div>
                 </div>
             )}
         </div>

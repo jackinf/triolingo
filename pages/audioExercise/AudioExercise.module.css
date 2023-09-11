@@ -4,15 +4,60 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f2f2f2;
+    background: linear-gradient(to bottom right, #F0F8FF, #E6E6FA);
 }
 
-.options button, .answer {
+.normalButton {
     margin: 10px;
-    padding: 5px;
-}
-
-.submit {
     padding: 10px 20px;
     font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.playButton {
+    position: absolute;
+    top: 20%;
+    width: 20em;
+    height: 20em;
+    background: url('./play-button.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+}
+
+.playButton:hover {
+    width: 21em;
+    height: 21em;
+}
+
+.options .normalButton {
+    margin: 5px;
+    background-color: #4B0082;
+    color: white;
+}
+
+.options:hover .normalButton:hover {
+    background-color: #9370DB;
+}
+
+.answer {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Scoreboard styles here */
+.scoreboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    color: white;
 }

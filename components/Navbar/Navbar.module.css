@@ -1,0 +1,49 @@
+.nav {
+    color: white;
+    padding: 1em;
+}
+
+.nav::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url('pattern1.png') no-repeat center center;
+    background-repeat: repeat;
+    background-size: 20%;
+    /*opacity: 0.05;*/
+    opacity: 0;
+    pointer-events: none;  /* allows clicks to go through the pseudo-element */
+    z-index: -1;
+}
+
+.ul {
+    list-style: none;
+    display: flex;
+    gap: 1em;
+}
+
+.link {
+    font-family: 'Roboto', sans-serif;
+
+    text-decoration: none;
+    /*background-color: #00b90d;*/
+    /*background-image: url('./pattern1.png'); !* replace with your pattern *!*/
+    background-size: 10%;
+    background-repeat: repeat;
+    /*color: white;*/
+
+    font-size: 2em;
+    /*font-weight: bolder;*/
+    padding: 1em 2em;
+    /*border-radius: 4px;*/
+    /*border: 1px solid #666;*/
+    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);*/
+}
+
+.link:hover {
+    /*background-color: #555;*/
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}

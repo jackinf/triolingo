@@ -1,3 +1,5 @@
+import {Sentence} from "@/interfaces";
+
 export const questions = [
     { en: 'apple', nl: 'appel' },
     { en: 'dog', nl: 'hond' },
@@ -11,7 +13,7 @@ export const questions = [
     { en: 'bird', nl: 'vogel' },
 ];
 
-export const sentences = [
+export const sentences: Sentence[] = [
     {
         nl: 'De kat is zwart',
         en: ['The', 'cat', 'is', 'black'],

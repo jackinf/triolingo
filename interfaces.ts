@@ -4,7 +4,7 @@ export interface Question {
 }
 
 export interface Sentence {
-    en: string;
+    en: Array<string>;
     nl: string;
     options: Array<string>;
 }

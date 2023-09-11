@@ -47,10 +47,10 @@ export default function AudioExercise() {
 
     return (
         <div className={styles.container}>
-            <button onClick={() => speak(questions[currentIndex].nl)}>Play Sentence</button>
+            <button className={styles.playButton} onClick={() => speak(questions[currentIndex].nl)} />
             <div className={styles.options}>
                 {questions[currentIndex].options.map((word, index) => (
-                    <button key={index} onClick={() => handleWordClick(word)}>
+                    <button className={styles.normalButton} key={index} onClick={() => handleWordClick(word)}>
                         {word}
                     </button>
                 ))}
